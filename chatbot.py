@@ -53,6 +53,27 @@ while True:
         print("UniChat: Email Campus Αμαρουσίου: amclibrary@mitropolitiko.edu.gr")
         print("UniChat: Πώς αλλιώς μπορώ να σε βοηθήσω;")
 
+    elif ("isic" in user or "card" in user
+          or "καρτα" in user or "κάρτα" in user
+          or "student card" in user):
+        print("UniChat: Η κάρτα ISIC εκδίδεται ηλεκτρονικά μέσω του Κολλεγίου.")
+        print("UniChat: Απαιτούνται βεβαίωση σπουδών, στοιχεία φοιτητή και κόστος 15€.")
+        print("UniChat: Η ενεργοποίηση ολοκληρώνεται σε 1-3 ημέρες μέσω εφαρμογής.")
+        print("UniChat: Πώς αλλιώς μπορώ να σε βοηθήσω;")
+
+    elif ("χειμερινα" in user or "χειμερινά" in user
+          or "μαθηματα" in user or "μαθήματα" in user
+          or "winter" in user or "courses" in user):
+        print("UniChat: Τα χειμερινά μαθήματα ξεκινούν στα μέσα Οκτωβρίου.")
+        print("UniChat: Πώς αλλιώς μπορώ να σε βοηθήσω;")
+
+    elif ("εκπτωση" in user or "έκπτωση" in user
+          or "discount" in user
+          or "προσφορα" in user or "προσφορά" in user
+          or "διδακτρα" in user or "δίδακτρα" in user):
+        print("UniChat: Υπάρχει έκπτωση 20% στα δίδακτρα για εγγραφές έως τα τέλη Φεβρουαρίου.")
+        print("UniChat: Πώς αλλιώς μπορώ να σε βοηθήσω;")
+
     else:
         print("UniChat: Συγγνώμη, δεν κατάλαβα την ερώτηση.")
         print("UniChat: Μπορείς να δοκιμάσεις ξανά.")
