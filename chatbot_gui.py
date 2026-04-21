@@ -426,11 +426,19 @@ class UniChatApp:
                 t_fg = t["user_time"]   if kind == "user" else t["bot_time"]
                 outer.configure(bg=t["chat_bg"])
                 bubble.configure(bg=b_bg)
-                labels = [w for w in bubble.winfo_children() if isinstance(w, tk.Label)]
-                if labels:
-                    labels[0].configure(bg=b_bg, fg=b_fg)
-                if len(labels) > 1:
-                    labels[1].configure(bg=b_bg, fg=t_fg)
+                children = list(bubble.winfo_children())
+                if not children:
+                    continue
+                # Last child is always the timestamp Label
+                children[-1].configure(bg=b_bg, fg=t_fg)
+                # First child is the message: Text for bot, Label for user
+                first = children[0]
+                if isinstance(first, tk.Text):
+                    first.config(state="normal")
+                    first.configure(bg=b_bg, fg=b_fg)
+                    first.config(state="disabled")
+                elif isinstance(first, tk.Label):
+                    first.configure(bg=b_bg, fg=b_fg)
             except tk.TclError:
                 pass
 
@@ -494,11 +502,18 @@ class UniChatApp:
         bubble = tk.Frame(outer, bg=t["bot_bubble"])
         bubble.pack(side="left")
 
-        tk.Label(
-            bubble, text=text, font=("Segoe UI", 10),
+        msg = tk.Text(
+            bubble, font=("Segoe UI", 10),
             bg=t["bot_bubble"], fg=t["bot_fg"],
-            wraplength=420, justify="left", padx=14, pady=10
-        ).pack(anchor="w")
+            relief="flat", bd=0, highlightthickness=0,
+            wrap="word", cursor="xterm",
+            width=52, height=text.count('\n') + 1,
+            padx=14, pady=10,
+            selectbackground="#4a90d9", selectforeground="#ffffff",
+        )
+        msg.insert("1.0", text)
+        msg.config(state="disabled")
+        msg.pack(anchor="w")
 
         tk.Label(
             bubble, text=now, font=("Segoe UI", 8),
@@ -519,11 +534,18 @@ class UniChatApp:
         bubble = tk.Frame(outer, bg=t["bot_bubble"])
         bubble.pack(side="left")
 
-        tk.Label(
-            bubble, text=text, font=("Segoe UI", 10),
+        msg = tk.Text(
+            bubble, font=("Segoe UI", 10),
             bg=t["bot_bubble"], fg=t["bot_fg"],
-            wraplength=420, justify="left", padx=14, pady=10
-        ).pack(anchor="w")
+            relief="flat", bd=0, highlightthickness=0,
+            wrap="word", cursor="xterm",
+            width=52, height=text.count('\n') + 1,
+            padx=14, pady=10,
+            selectbackground="#4a90d9", selectforeground="#ffffff",
+        )
+        msg.insert("1.0", text)
+        msg.config(state="disabled")
+        msg.pack(anchor="w")
 
         tk.Button(
             bubble, text="↗  Άνοιγμα Τοποθεσίας",
