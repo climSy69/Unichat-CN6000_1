@@ -33,6 +33,26 @@ while True:
         print("UniChat: Η εξεταστική περίοδος ξεκινά τον Ιούνιο.")
         print("UniChat: Πώς αλλιώς μπορώ να σε βοηθήσω;")
 
+    elif ("βαθμοι" in user or "βαθμοί" in user
+          or "grades" in user or "results" in user
+          or "αποτελεσματα" in user or "αποτελέσματα" in user
+          or "moodle" in user):
+        print("UniChat: Οι βαθμοί ανακοινώνονται μέσω της εφαρμογής Moodle, στο section INFORMATION & ANNOUNCEMENTS.")
+        print("UniChat: Πώς αλλιώς μπορώ να σε βοηθήσω;")
+
+    elif ("εγγραφες" in user or "εγγραφές" in user
+          or "registration" in user or "registrations" in user
+          or "enroll" in user or "enrollment" in user):
+        print("UniChat: Οι εγγραφές πραγματοποιούνται έως τα τέλη Σεπτεμβρίου.")
+        print("UniChat: Πώς αλλιώς μπορώ να σε βοηθήσω;")
+
+    elif ("βιβλιοθηκη" in user or "βιβλιοθήκη" in user
+          or "library" in user
+          or "βιβλια" in user or "βιβλία" in user):
+        print("UniChat: Η βιβλιοθήκη του Μητροπολιτικού Κολλεγίου διαθέτει χιλιάδες τίτλους βιβλίων, υπολογιστές και δωρεάν WiFi.")
+        print("UniChat: Email Campus Αμαρουσίου: amclibrary@mitropolitiko.edu.gr")
+        print("UniChat: Πώς αλλιώς μπορώ να σε βοηθήσω;")
+
     else:
         print("UniChat: Συγγνώμη, δεν κατάλαβα την ερώτηση.")
         print("UniChat: Μπορείς να δοκιμάσεις ξανά.")
