@@ -1,13 +1,9 @@
-print("UniChat: Γεια σου! Είμαι το UniChat. Πώς μπορώ να σε βοηθήσω;")
+def greet():
+    print("UniChat: Γεια σου! Είμαι το UniChat. Πώς μπορώ να σε βοηθήσω;")
 
-while True:
-    user = input("Εσύ: ").lower()
 
-    if user == "exit" or user == "τελος" or user == "αντιο":
-        print("UniChat: Ευχαριστώ! Καλή συνέχεια.")
-        break
-
-    elif "τηλέφωνο" in user or "τηλεφωνο" in user:
+def get_response(user):
+    if ("τηλέφωνο" in user or "τηλεφωνο" in user):
         print("UniChat: Το τηλέφωνο της γραμματείας είναι 210XXXXXXX.")
         print("UniChat: Πώς αλλιώς μπορώ να σε βοηθήσω;")
 
@@ -77,3 +73,20 @@ while True:
     else:
         print("UniChat: Συγγνώμη, δεν κατάλαβα την ερώτηση.")
         print("UniChat: Μπορείς να δοκιμάσεις ξανά.")
+
+
+def main():
+    greet()
+
+    while True:
+        user = input("Εσύ: ").lower()
+
+        if user == "exit" or user == "τελος" or user == "αντιο":
+            print("UniChat: Ευχαριστώ! Καλή συνέχεια.")
+            break
+
+        get_response(user)
+
+
+if __name__ == "__main__":
+    main()
