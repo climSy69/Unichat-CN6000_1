@@ -166,8 +166,8 @@ class UniChatApp:
     def __init__(self, root):
         self.root = root
         self.root.title("UniChat")
-        self.root.geometry("920x700")
-        self.root.minsize(680, 520)
+        self.root.geometry("1050x780")
+        self.root.minsize(850, 600)
 
         self.dark_mode = True
         self.t = DARK
