@@ -1,3 +1,8 @@
+# chatbot_gui.py — GUI version of UniChat built with tkinter
+# This file creates the full graphical interface for the chatbot.
+# It includes the chat window, sidebar menu, theme toggle, and quick-action buttons.
+
+# Standard library imports for system info, DPI settings, browser, GUI, and timestamps
 import sys
 import ctypes
 import webbrowser
@@ -18,34 +23,43 @@ if sys.platform == "win32":
 # ─── CHATBOT LOGIC ────────────────────────────────────────────────────────────
 
 def get_response(user_input):
+    # Convert input to lowercase so keyword matching works regardless of casing.
+    # Each elif block handles a different topic the student might ask about.
+    # Returns a plain text string, or a string with a __MAPLINK__ marker for location answers.
     user = user_input.lower()
 
     if "τηλέφωνο" in user or "τηλεφωνο" in user:
+        # User asked about the secretary's phone number
         return "Το τηλέφωνο της γραμματείας είναι 210XXXXXXX.\nΠώς αλλιώς μπορώ να σε βοηθήσω;"
 
     elif ("ωρες" in user or "ώρες" in user) and "γραμματ" in user:
+        # User asked about the secretary's office hours
         return "Η γραμματεία λειτουργεί από 09:00 έως 15:00.\nΠώς αλλιώς μπορώ να σε βοηθήσω;"
 
     elif ("που" in user or "πού" in user or "διευθυνση" in user or "διεύθυνση" in user
           or "βρίσκεται" in user or "βρισκεται" in user
           or "location" in user or "maps" in user or "address" in user):
+        # User asked for the university's location — include the Maps link marker
         return ("Το πανεπιστήμιο βρίσκεται στο Μαρούσι.\n"
                 "Πώς αλλιώς μπορώ να σε βοηθήσω;"
                 "\n__MAPLINK__:https://maps.app.goo.gl/ad64hHNiE3wW3HUM9")
 
     elif ("email" in user or "μειλ" in user or "mail" in user
           or "επικοινωνια" in user or "επικοινωνία" in user):
+        # User asked for the school's contact email
         return "Το email της σχολής είναι info@mitropolitiko.edu.gr\nΠώς αλλιώς μπορώ να σε βοηθήσω;"
 
     elif ("εξεταστικη" in user or "εξεταστική" in user
           or "exams" in user or "exam" in user
           or "εξετασεις" in user or "εξετάσεις" in user):
+        # User asked about the exam period
         return "Η εξεταστική περίοδος ξεκινά τον Ιούνιο.\nΠώς αλλιώς μπορώ να σε βοηθήσω;"
 
     elif ("βαθμοι" in user or "βαθμοί" in user
           or "grades" in user or "results" in user
           or "αποτελεσματα" in user or "αποτελέσματα" in user
           or "moodle" in user):
+        # User asked about grades or the Moodle platform
         return ("Οι βαθμοί ανακοινώνονται μέσω της εφαρμογής Moodle,\n"
                 "στο section INFORMATION & ANNOUNCEMENTS.\n"
                 "Πώς αλλιώς μπορώ να σε βοηθήσω;")
@@ -53,11 +67,13 @@ def get_response(user_input):
     elif ("εγγραφες" in user or "εγγραφές" in user
           or "registration" in user or "registrations" in user
           or "enroll" in user or "enrollment" in user):
+        # User asked about student enrollment or registrations
         return "Οι εγγραφές πραγματοποιούνται έως τα τέλη Σεπτεμβρίου.\nΠώς αλλιώς μπορώ να σε βοηθήσω;"
 
     elif ("βιβλιοθηκη" in user or "βιβλιοθήκη" in user
           or "library" in user
           or "βιβλια" in user or "βιβλία" in user):
+        # User asked about the campus library
         return ("Η βιβλιοθήκη του Μητροπολιτικού Κολλεγίου διαθέτει\n"
                 "χιλιάδες τίτλους βιβλίων, υπολογιστές και δωρεάν WiFi.\n"
                 "Email Campus Αμαρουσίου: amclibrary@mitropolitiko.edu.gr\n"
@@ -66,6 +82,7 @@ def get_response(user_input):
     elif ("isic" in user or "card" in user
           or "καρτα" in user or "κάρτα" in user
           or "student card" in user):
+        # User asked about the ISIC student card
         return ("Η κάρτα ISIC εκδίδεται ηλεκτρονικά μέσω του Κολλεγίου.\n"
                 "Απαιτούνται βεβαίωση σπουδών, στοιχεία φοιτητή και κόστος 15€.\n"
                 "Η ενεργοποίηση ολοκληρώνεται σε 1-3 ημέρες μέσω εφαρμογής.\n"
@@ -74,21 +91,25 @@ def get_response(user_input):
     elif ("χειμερινα" in user or "χειμερινά" in user
           or "μαθηματα" in user or "μαθήματα" in user
           or "winter" in user or "courses" in user):
+        # User asked about winter semester courses
         return "Τα χειμερινά μαθήματα ξεκινούν στα μέσα Οκτωβρίου.\nΠώς αλλιώς μπορώ να σε βοηθήσω;"
 
     elif ("εκπτωση" in user or "έκπτωση" in user
           or "discount" in user
           or "προσφορα" in user or "προσφορά" in user
           or "διδακτρα" in user or "δίδακτρα" in user):
+        # User asked about tuition fees or available discounts
         return ("Υπάρχει έκπτωση 20% στα δίδακτρα\n"
                 "για εγγραφές έως τα τέλη Φεβρουαρίου.\n"
                 "Πώς αλλιώς μπορώ να σε βοηθήσω;")
 
+    # No keyword matched — ask the user to rephrase
     return "Συγγνώμη, δεν κατάλαβα την ερώτηση.\nΜπορείς να δοκιμάσεις ξανά."
 
 
 # ─── THEMES ───────────────────────────────────────────────────────────────────
 
+# Color values for dark mode — used throughout the GUI for backgrounds, text, and buttons
 DARK = {
     "bg":           "#1a1a1a",
     "topbar":       "#111111",
@@ -116,6 +137,7 @@ DARK = {
     "toggle":       "☾",
 }
 
+# Color values for light mode
 LIGHT = {
     "bg":           "#f2f2f2",
     "topbar":       "#ffffff",
@@ -143,6 +165,8 @@ LIGHT = {
     "toggle":       "☀",
 }
 
+# Quick-action buttons shown at the bottom of the chat window
+# Each entry is (button label, query text sent to the chatbot)
 QUICK_ACTIONS = [
     ("  Πού βρίσκεται η σχολή;",    "πού βρίσκεται η σχολή"),
     ("  Email επικοινωνίας σχολής",  "email επικοινωνίας σχολής"),
@@ -152,8 +176,11 @@ QUICK_ACTIONS = [
 
 # ─── GUI APPLICATION ──────────────────────────────────────────────────────────
 
+# UniChatApp is the main class that builds and controls the entire GUI.
+# It creates the top bar, sidebar, chat area, input field, and quick buttons.
 class UniChatApp:
 
+    # FAQ shortcuts shown in the sidebar — each entry sends a predefined question
     FAQ_ITEMS = [
         ("Πού βρίσκεται η σχολή;",            "πού βρίσκεται η σχολή"),
         ("Πληροφορίες βιβλιοθήκης",           "πληροφορίες βιβλιοθήκης"),
@@ -169,24 +196,28 @@ class UniChatApp:
         self.root.geometry("1050x780")
         self.root.minsize(850, 600)
 
+        # Start in dark mode by default
         self.dark_mode = True
         self.t = DARK
         self.sidebar_open = False
-        self._bubble_refs = []
-        self._quick_btns = []
+        self._bubble_refs = []   # Keeps references to all chat bubbles for theme updates
+        self._quick_btns = []    # Keeps references to quick-action buttons for theme updates
 
         self.root.configure(bg=self.t["bg"])
         self._build_ui()
+        # Show the welcome message as the first bot bubble
         self._add_bot_bubble("Γεια σου! Είμαι το UniChat.\nΠώς μπορώ να σε βοηθήσω;")
 
     # ── BUILD ─────────────────────────────────────────────────────────────
 
+    # Build all major sections of the UI in order
     def _build_ui(self):
         self._build_topbar()
         self._build_body()
         self._build_input()      # pack input first → sits at very bottom
         self._build_quick_bar()  # pack quick bar above input
 
+    # Create the top navigation bar with the menu button, title, and theme toggle
     def _build_topbar(self):
         self.topbar = tk.Frame(self.root, bg=self.t["topbar"], height=56)
         self.topbar.pack(fill="x", side="top")
@@ -223,6 +254,7 @@ class UniChatApp:
         self.topbar_sep = tk.Frame(self.root, bg=self.t["divider"], height=1)
         self.topbar_sep.pack(fill="x", side="top")
 
+    # Create the main body area: sidebar (hidden by default) and the scrollable chat canvas
     def _build_body(self):
         self.body = tk.Frame(self.root, bg=self.t["bg"])
         self.body.pack(fill="both", expand=True)
@@ -232,6 +264,7 @@ class UniChatApp:
         self.chat_frame = tk.Frame(self.body, bg=self.t["chat_bg"])
         self.chat_frame.pack(fill="both", expand=True, side="left")
 
+        # Scrollable canvas to hold all chat bubbles
         self.canvas = tk.Canvas(
             self.chat_frame, bg=self.t["chat_bg"], highlightthickness=0
         )
@@ -251,6 +284,7 @@ class UniChatApp:
 
         self._build_sidebar_contents()
 
+    # Populate the sidebar with menu buttons and FAQ shortcuts
     def _build_sidebar_contents(self):
         t = self.t
         for w in self.sidebar.winfo_children():
@@ -296,6 +330,7 @@ class UniChatApp:
                 command=lambda q=query: self._faq_click(q)
             ).pack(fill="x", padx=10, pady=2)
 
+    # Build the message input field and the send button at the bottom of the window
     def _build_input(self):
         # Packed first → sits at the very bottom of root
         self.input_bar = tk.Frame(self.root, bg=self.t["topbar"], padx=16, pady=12)
@@ -320,6 +355,7 @@ class UniChatApp:
             relief="flat", bd=0
         )
         self.entry.pack(fill="x", expand=True, ipady=10, padx=14)
+        # Pressing Enter submits the message, same as clicking the send button
         self.entry.bind("<Return>", lambda e: self.send_message())
 
         self.send_btn = tk.Button(
@@ -333,6 +369,7 @@ class UniChatApp:
         )
         self.send_btn.pack(side="right")
 
+    # Create the row of quick-action buttons shown above the input field
     def _build_quick_bar(self):
         # Packed after input → sits above input bar
         self.quick_bar = tk.Frame(self.root, bg=self.t["topbar"], pady=10)
@@ -375,6 +412,7 @@ class UniChatApp:
 
     # ── SIDEBAR ───────────────────────────────────────────────────────────
 
+    # Show or hide the sidebar panel when the menu button is clicked
     def toggle_sidebar(self):
         if self.sidebar_open:
             self.sidebar.pack_forget()
@@ -385,11 +423,13 @@ class UniChatApp:
 
     # ── THEME ─────────────────────────────────────────────────────────────
 
+    # Switch between dark and light mode when the toggle button is clicked
     def toggle_theme(self):
         self.dark_mode = not self.dark_mode
         self.t = DARK if self.dark_mode else LIGHT
         self._apply_theme()
 
+    # Apply the active theme to every widget in the window, including existing chat bubbles
     def _apply_theme(self):
         t = self.t
         self.root.configure(bg=t["bg"])
@@ -419,6 +459,7 @@ class UniChatApp:
         self.send_btn.configure(bg=t["send_bg"], fg=t["send_fg"])
         self._build_sidebar_contents()
 
+        # Re-color all existing chat bubbles to match the new theme
         for outer, bubble, kind in self._bubble_refs:
             try:
                 b_bg = t["user_bubble"] if kind == "user" else t["bot_bubble"]
@@ -444,6 +485,7 @@ class UniChatApp:
 
     # ── MESSAGING ─────────────────────────────────────────────────────────
 
+    # Handle sending a message — either from the input field or from a quick button
     def send_message(self, text=None):
         msg = text if text else self.entry.get().strip()
         if not msg:
@@ -451,22 +493,27 @@ class UniChatApp:
         self.entry.delete(0, "end")
         self._add_user_bubble(msg)
         self._show_typing()
+        # Wait 1 second before showing the bot's response (simulates typing delay)
         self.root.after(1000, lambda: self._deliver(msg))
 
+    # When a sidebar FAQ button is clicked, close the sidebar and send the question
     def _faq_click(self, query):
         if self.sidebar_open:
             self.toggle_sidebar()
         self.send_message(query)
 
+    # Remove the typing indicator, get the bot's response, and display it
     def _deliver(self, msg):
         self._hide_typing()
         response = get_response(msg)
+        # If the response includes a Maps link, display it with an open-maps button
         if "\n__MAPLINK__:" in response:
             text, url = response.split("\n__MAPLINK__:", 1)
             self._add_bot_bubble_with_link(text, url)
         else:
             self._add_bot_bubble(response)
 
+    # Display the user's message as a bubble on the right side of the chat
     def _add_user_bubble(self, text):
         t = self.t
         now = datetime.now().strftime("%H:%M")
@@ -492,6 +539,8 @@ class UniChatApp:
         self._bubble_refs.append((outer, bubble, "user"))
         self._scroll_bottom()
 
+    # Display the bot's response as a selectable/copyable text bubble on the left side.
+    # A tk.Text widget is used instead of a Label so the user can select and copy the text.
     def _add_bot_bubble(self, text):
         t = self.t
         now = datetime.now().strftime("%H:%M")
@@ -524,6 +573,7 @@ class UniChatApp:
         self._bubble_refs.append((outer, bubble, "bot"))
         self._scroll_bottom()
 
+    # Same as _add_bot_bubble but also adds a button to open Google Maps in the browser
     def _add_bot_bubble_with_link(self, text, url):
         t = self.t
         now = datetime.now().strftime("%H:%M")
@@ -547,6 +597,7 @@ class UniChatApp:
         msg.config(state="disabled")
         msg.pack(anchor="w")
 
+        # Button that opens the Google Maps location in the default web browser
         tk.Button(
             bubble, text="↗  Άνοιγμα Τοποθεσίας",
             font=("Segoe UI", 9, "bold"),
@@ -568,6 +619,7 @@ class UniChatApp:
 
     # ── TYPING INDICATOR ──────────────────────────────────────────────────
 
+    # Show a temporary "typing..." bubble to simulate the bot thinking
     def _show_typing(self):
         t = self.t
         self._typing_outer = tk.Frame(self.bubbles_frame, bg=t["chat_bg"])
@@ -585,6 +637,7 @@ class UniChatApp:
         ).pack()
         self._scroll_bottom()
 
+    # Remove the typing indicator bubble from the chat
     def _hide_typing(self):
         try:
             self._typing_outer.destroy()
@@ -593,12 +646,14 @@ class UniChatApp:
 
     # ── ACTIONS ───────────────────────────────────────────────────────────
 
+    # Clear all messages from the chat and show the welcome message again
     def clear_chat(self):
         for w in self.bubbles_frame.winfo_children():
             w.destroy()
         self._bubble_refs.clear()
         self._add_bot_bubble("Γεια σου! Είμαι το UniChat.\nΠώς μπορώ να σε βοηθήσω;")
 
+    # Close the sidebar (if open) and start a fresh conversation
     def new_chat(self):
         if self.sidebar_open:
             self.toggle_sidebar()
@@ -607,8 +662,10 @@ class UniChatApp:
 
 # ─── ENTRY POINT ─────────────────────────────────────────────────────────────
 
+# Launch the GUI application when this file is run directly
 if __name__ == "__main__":
     root = tk.Tk()
+    # Adjust tkinter's scaling so text and widgets look sharp on high-DPI screens
     if sys.platform == "win32":
         try:
             dpi = root.winfo_fpixels('1i')
