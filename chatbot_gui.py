@@ -5,6 +5,7 @@
 # Standard library imports for system info, DPI settings, browser, GUI, and timestamps
 import sys
 import ctypes
+import textwrap
 import webbrowser
 import tkinter as tk
 from datetime import datetime
@@ -551,12 +552,15 @@ class UniChatApp:
         bubble = tk.Frame(outer, bg=t["bot_bubble"])
         bubble.pack(side="left")
 
+        paragraphs = text.split('\n')
+        height = sum(max(1, len(textwrap.wrap(p, 48))) if p else 1 for p in paragraphs)
+
         msg = tk.Text(
             bubble, font=("Segoe UI", 10),
             bg=t["bot_bubble"], fg=t["bot_fg"],
             relief="flat", bd=0, highlightthickness=0,
             wrap="word", cursor="xterm",
-            width=52, height=text.count('\n') + 1,
+            width=52, height=max(1, height),
             padx=14, pady=10,
             selectbackground="#4a90d9", selectforeground="#ffffff",
         )
@@ -584,12 +588,15 @@ class UniChatApp:
         bubble = tk.Frame(outer, bg=t["bot_bubble"])
         bubble.pack(side="left")
 
+        paragraphs = text.split('\n')
+        height = sum(max(1, len(textwrap.wrap(p, 48))) if p else 1 for p in paragraphs)
+
         msg = tk.Text(
             bubble, font=("Segoe UI", 10),
             bg=t["bot_bubble"], fg=t["bot_fg"],
             relief="flat", bd=0, highlightthickness=0,
             wrap="word", cursor="xterm",
-            width=52, height=text.count('\n') + 1,
+            width=52, height=max(1, height),
             padx=14, pady=10,
             selectbackground="#4a90d9", selectforeground="#ffffff",
         )
