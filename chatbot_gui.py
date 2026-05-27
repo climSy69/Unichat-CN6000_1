@@ -6,6 +6,7 @@
 import sys
 import ctypes
 import textwrap
+import unicodedata
 import webbrowser
 import tkinter as tk
 from datetime import datetime
@@ -28,6 +29,16 @@ def get_response(user_input):
     # Each elif block handles a different topic the student might ask about.
     # Returns a plain text string, or a string with a __MAPLINK__ marker for location answers.
     user = user_input.lower()
+
+    # Strip accents so τέλος matches τελος, αντίο matches αντιο, etc.
+    user_plain = ''.join(
+        c for c in unicodedata.normalize('NFD', user)
+        if unicodedata.category(c) != 'Mn'
+    )
+
+    # Exit keywords must be checked first, before any topic matching
+    if user_plain in ("exit", "τελος", "αντιο"):
+        return "Ευχαριστώ που χρησιμοποίησες το UniChat! Καλή συνέχεια."
 
     if "τηλέφωνο" in user or "τηλεφωνο" in user:
         # User asked about the secretary's phone number
@@ -358,6 +369,7 @@ class UniChatApp:
         self.entry.pack(fill="x", expand=True, ipady=10, padx=14)
         # Pressing Enter submits the message, same as clicking the send button
         self.entry.bind("<Return>", lambda e: self.send_message())
+        self._setup_entry_context_menu()
 
         self.send_btn = tk.Button(
             self.input_bar, text="  Αποστολή  ➤",
@@ -369,6 +381,53 @@ class UniChatApp:
             command=self.send_message, padx=18, pady=10, bd=0
         )
         self.send_btn.pack(side="right")
+
+    # Wire up Ctrl+V paste and a right-click context menu on the input Entry.
+    def _setup_entry_context_menu(self):
+        # Explicit Ctrl+V / Cmd+V bindings so paste always works.
+        # Returns "break" to prevent the default class binding from firing a second time.
+        def _do_paste(e):
+            self.entry.event_generate("<<Paste>>")
+            return "break"
+
+        self.entry.bind("<Control-v>", _do_paste)
+        self.entry.bind("<Control-V>", _do_paste)
+        if sys.platform == "darwin":
+            self.entry.bind("<Command-v>", _do_paste)
+            self.entry.bind("<Command-V>", _do_paste)
+
+        # Right-click context menu with Greek labels
+        t = self.t
+        self._entry_menu = tk.Menu(
+            self.root, tearoff=0,
+            bg=t["input_bg"], fg=t["input_fg"],
+            activebackground=t["send_bg"], activeforeground=t["send_fg"],
+        )
+        self._entry_menu.add_command(
+            label="Επικόλληση",
+            command=lambda: self.entry.event_generate("<<Paste>>"),
+        )
+        self._entry_menu.add_command(
+            label="Αντιγραφή",
+            command=lambda: self.entry.event_generate("<<Copy>>"),
+        )
+        self._entry_menu.add_command(
+            label="Αποκοπή",
+            command=lambda: self.entry.event_generate("<<Cut>>"),
+        )
+        self._entry_menu.add_separator()
+        self._entry_menu.add_command(
+            label="Επιλογή όλων",
+            command=lambda: self.entry.select_range(0, "end"),
+        )
+
+        def _show_menu(event):
+            self.entry.focus_set()
+            self._entry_menu.tk_popup(event.x_root, event.y_root)
+
+        self.entry.bind("<Button-3>", _show_menu)
+        if sys.platform == "darwin":
+            self.entry.bind("<Button-2>", _show_menu)
 
     # Create the row of quick-action buttons shown above the input field
     def _build_quick_bar(self):
@@ -458,6 +517,11 @@ class UniChatApp:
         self.entry.configure(bg=t["input_bg"], fg=t["input_fg"],
                              insertbackground=t["input_fg"])
         self.send_btn.configure(bg=t["send_bg"], fg=t["send_fg"])
+        if hasattr(self, "_entry_menu"):
+            self._entry_menu.configure(
+                bg=t["input_bg"], fg=t["input_fg"],
+                activebackground=t["send_bg"], activeforeground=t["send_fg"],
+            )
         self._build_sidebar_contents()
 
         # Re-color all existing chat bubbles to match the new theme
