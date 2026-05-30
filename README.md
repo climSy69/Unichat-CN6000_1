@@ -161,9 +161,3 @@ Academic Year 2025–2026
 
 Supervisor: Spentzas Dimitrios
 Course: CN6000_1 — Mental Wealth Professional Life 3
-
----
-
-## Repository
-
-[https://github.com/climSy69/Unichat-thesis](https://github.com/climSy69/Unichat-thesis)
